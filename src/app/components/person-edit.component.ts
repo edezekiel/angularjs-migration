@@ -5,6 +5,7 @@ import {ContactService} from "../services/contact.service";
 import {UIRouterState} from "../ajs-upgraded-providers";
 import {UIRouterStateParams} from "../ajs-upgraded-providers";
 
+
 @Component({
   selector: "personEdit", // <person-edit>
   templateUrl: "app/components/person-form.html",
