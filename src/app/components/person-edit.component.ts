@@ -1,10 +1,7 @@
-import * as angular from 'angular';
-
 import { Inject, Component } from "@angular/core";
-import { UIRouterState, UIRouterStateParams } from "../ajs-upgraded-providers";
-import { downgradeComponent } from "@angular/upgrade/static";
 
 import { ContactService } from "../services/contact.service";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: "personEdit",
@@ -14,28 +11,26 @@ export class PersonEditComponent {
     public mode: string = 'Edit';
     public person: any;
 
-    constructor(@Inject(UIRouterStateParams) private $stateParams,
-                @Inject(UIRouterState) private $state,
+    constructor(private route: ActivatedRoute,
+                private router: Router,
                 @Inject(ContactService) public contacts: ContactService) {
-      this.person = this.contacts.getPerson(this.$stateParams.email);
+      this.route.params.subscribe(params => {
+        if (params['email']) {
+          this.person = this.contacts.getPerson(params['email']);
+        }
+      })
     }
 
     save() {
       this.contacts.updateContact(this.person).then(() => {
-        this.$state.go("list");
+        this.router.navigate(['']);
       });
     };
 
     remove() {
       this.contacts.removeContact(this.person).then(() => {
-        this.$state.go("list");
+        this.router.navigate(['']);
       });
     };
 
   }
-
-angular
-    .module('codecraft')
-    .directive('personEdit', downgradeComponent({
-      component: PersonEditComponent
-    }));

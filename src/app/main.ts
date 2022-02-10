@@ -1,43 +1,43 @@
-import 'angular';
-import 'angular-resource';
-import 'angular-animate';
-import 'ng-infinite-scroll';
-import 'angular-spinner';
-import 'angular-auto-validate/dist/jcs-auto-validate';
-import 'angular-ladda';
-import 'angular-strap';
-import 'angularjs-toaster';
-import 'angular-ui-router';
+import "angular";
+import "angular-resource";
+import "angular-animate";
+import "ng-infinite-scroll";
+import "angular-spinner";
+import "angular-auto-validate/dist/jcs-auto-validate";
+import "angular-ladda";
+import "angular-strap";
+import "angularjs-toaster";
+import "angular-ui-router";
 
-import './app.main';
-import './services';
-import './filters';
-import './components';
-import './app.routes';
+import "./app.main";
+// import "./services";
+import "./filters";
+// import "./components";
 
-import './polyfills.ts';
+import "./polyfills.ts";
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { UpgradeModule } from '@angular/upgrade/static';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { HttpClientModule } from '@angular/common/http';
+import {NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {UpgradeModule} from "@angular/upgrade/static";
+import {HttpClientModule} from "@angular/common/http";
+import { RouterModule } from '@angular/router';
 
 import {LaddaModule} from "angular2-ladda";
-import {InfiniteScrollModule} from 'angular2-infinite-scroll';
+import {InfiniteScrollModule} from "angular2-infinite-scroll";
+import {ToasterModule, ToasterService} from "angular2-toaster";
+import {Contact} from "./services/contact.resource";
+import {ContactService} from "./services/contact.service";
+import {SearchComponent} from "./components/search.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {DefaultImagePipe} from "./pipes/default-image.pipe";
+import {CardComponent} from "./components/card.component";
+import {SpinnerComponent} from "./components/spinner.component";
+import {PersonListComponent} from "./components/person-list.component";
+import {PersonCreateComponent} from "./components/person-create.component";
+import {PersonEditComponent} from "./components/person-edit.component";
+import {AppRootComponent} from "./components/app-root.component";
 
-import { Contact } from "./services/contact.resource";
-import { ContactService } from "./services/contact.service";
-import { toasterServiceProvider, uiRouterStateProvider, uiRouterStateParamsProvider } from "./ajs-upgraded-providers";
-import { SearchComponent } from "./components/search.component";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { DefaultImagePipe } from "./pipes/default-image.pipe";
-import { CardComponent } from "./components/card.component";
-import { SpinnerComponent } from "./components/spinner.component";
-import { PersonListComponent } from "./components/person-list.component";
-import { PersonCreateComponent } from "./components/person-create.component";
-import { PersonEditComponent } from "./components/person-edit.component";
-
+import {routes} from './app.routes';
 @NgModule({
   imports: [
     BrowserModule,
@@ -46,14 +46,14 @@ import { PersonEditComponent } from "./components/person-edit.component";
     FormsModule,
     ReactiveFormsModule,
     LaddaModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ToasterModule,
+    RouterModule.forRoot(routes, {useHash: true})
   ],
   providers: [
     Contact,
     ContactService,
-    toasterServiceProvider,
-    uiRouterStateProvider,
-    uiRouterStateParamsProvider
+    ToasterService,
   ],
   declarations: [
     SearchComponent,
@@ -62,26 +62,9 @@ import { PersonEditComponent } from "./components/person-edit.component";
     SpinnerComponent,
     PersonListComponent,
     PersonCreateComponent,
-    PersonEditComponent
+    PersonEditComponent,
+    AppRootComponent,
   ],
-  entryComponents: [
-    SearchComponent,
-    CardComponent,
-    SpinnerComponent,
-    PersonListComponent,
-    PersonCreateComponent,
-    PersonEditComponent
-  ]
+  bootstrap: [AppRootComponent],
 })
-export class AppModule {
-  // Override Angular bootstrap so it doesn't do anything
-  ngDoBootstrap() {
-  }
-}
-
-// Bootstrap using the UpgradeModule
-platformBrowserDynamic().bootstrapModule(AppModule).then(platformRef => {
-  console.log("Bootstrapping in Hybrid mode with Angular & AngularJS");
-  const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
-  upgrade.bootstrap(document.body, ['codecraft']);
-});
+export class AppModule {}

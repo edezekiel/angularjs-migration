@@ -1,11 +1,7 @@
-import * as angular from 'angular';
-
 import { Inject, Component } from "@angular/core";
-import { downgradeComponent } from "@angular/upgrade/static";
-import { UIRouterState } from "../ajs-upgraded-providers";
 
 import { ContactService } from "../services/contact.service";
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'personCreate',
@@ -15,8 +11,9 @@ export class PersonCreateComponent {
     public person = {};
     public mode: string = 'Create';
 
-    constructor(@Inject(ContactService) public contacts: ContactService,
-                @Inject(UIRouterState) private $state) {
+    constructor(
+      @Inject(ContactService) public contacts: ContactService,
+               private router: Router) {
       this.person = {};
     }
 
@@ -24,13 +21,7 @@ export class PersonCreateComponent {
       console.log("createContact");
       this.contacts.createContact(this.person)
           .then(() => {
-            this.$state.go("list");
+            this.router.navigate(['']);
           })
     }
   }
-
-angular
-    .module('codecraft')
-    .directive('personCreate', downgradeComponent({
-      component: PersonCreateComponent
-    }));
